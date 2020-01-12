@@ -1,14 +1,21 @@
 <template>
   <div>
+    <v-divider />
+
     <v-row>
-      <v-btn class="btn" color="primary">
-        {{ sentence.normal }}
-      </v-btn>
+      <v-col>
+        <v-btn class="btn" color="primary">
+          {{ sentence.normal }}
+        </v-btn>
+      </v-col>
     </v-row>
+
     <v-row>
-      <v-btn class="btn" v-for="(word, index) in words" :key="index">
-        {{ word.normal }}
-      </v-btn>
+      <v-col>
+        <v-btn class="btn mr-1 mb-1" v-for="(word, index) in words" :key="index">
+          {{ word.normal }}
+        </v-btn>
+      </v-col>
     </v-row>
   </div>
 </template>

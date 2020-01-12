@@ -5,7 +5,12 @@
       label="Input text"
     ></v-textarea>
 
-    <BreakingDownPanel v-for="(sentence, index) in brokenDownText.sentences" :key="index" :sentence="sentence" :words="sentence.words" />
+    <BreakingDownPanel
+      v-for="(sentence, index) in brokenDownText.sentences"
+      :key="index"
+      :sentence="sentence"
+      :words="sentence.words"
+    ></BreakingDownPanel>
 
   </div>
 </template>
@@ -22,7 +27,6 @@ export default {
   components: {
     BreakingDownPanel,
   },
-
 
   data: () => ({
     inputText: '',
