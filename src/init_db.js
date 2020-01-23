@@ -23,7 +23,7 @@ db.serialize(() => {
   db.run('CREATE TABLE IF NOT EXISTS word_statistics (pond_id integer, word text, appear_count integer default 0, correct_count integer default 0, incorrect_count integer default 0, PRIMARY KEY(pond_id, word));');
 
   // Create pond
-  db.run("INSERT INTO pond (name) VALUES ('test_pond');");
+  registerPond('test_pond');
 
   let sampleData = brokenDownText(sampleText);
 
@@ -63,6 +63,12 @@ db.serialize(() => {
 });
 
 //db.close();
+
+function registerPond(name) {
+  db.run("INSERT INTO pond (name) VALUES ($name);", {
+    $name: name,
+  });
+}
 
 function registerText(pondId, text) {
   db.run("INSERT INTO text (pond_id, original) VALUES ($pond_id, $original);", {
