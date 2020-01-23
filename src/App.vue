@@ -1,24 +1,8 @@
 <template>
   <v-app>
-    <v-bottom-navigation
-      app
-      v-model="bottomNav"
-      color="primary"
-    >
-      <v-btn
-        v-for="item in items"
-        :key="item.title"
-        :to="item.link"
-      >
-        <span>{{ item.title }}</span>
-        <v-icon>{{ item.icon }}</v-icon>
-      </v-btn>
-    </v-bottom-navigation>
-
-    <!--
-    <v-app-bar app>
+    <!-- For validating bottom navigation -->
+    <v-app-bar class="d-none">
     </v-app-bar>
-    -->
 
     <!-- Sizes your content based upon application components -->
     <v-content>
@@ -35,6 +19,22 @@
     <v-footer app>
     </v-footer>
     -->
+
+    <v-bottom-navigation
+      app
+      v-model="bottomNav"
+      color="primary"
+    >
+      <v-btn
+        v-for="item in items"
+        :key="item.title"
+        :to="item.link"
+      >
+        <span>{{ item.title }}</span>
+        <v-icon>{{ item.icon }}</v-icon>
+      </v-btn>
+    </v-bottom-navigation>
+
   </v-app>
 </template>
 
