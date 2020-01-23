@@ -21,13 +21,18 @@
       >
         <v-card
           outlined
+          :color="isSelected(pond) ? 'primary' : ''"
         >
           <v-list-item three-line>
             <v-list-item-content>
-              <v-list-item-title class="headline mb-1">
+              <v-list-item-title v-if="isSelected(pond)" class="headline mb-1 white--text">
+                {{ pond.name }} (Selected)
+              </v-list-item-title>
+              <v-list-item-title v-else class="headline mb-1">
                 {{ pond.name }}
               </v-list-item-title>
-              <v-list-item-subtitle>
+
+              <v-list-item-subtitle :class="{ 'white--text' : isSelected(pond) }">
                 {{ pond.description }}
               </v-list-item-subtitle>
             </v-list-item-content>
@@ -38,6 +43,7 @@
               text
               color="primary"
               @click="selectPond(pond);"
+              :disabled="isSelected(pond)"
             >
               Select
             </v-btn>
@@ -45,6 +51,7 @@
               text
               color="error"
               @click="deletePond(pond);"
+              :disabled="isSelected(pond)"
             >
               Delete
             </v-btn>
@@ -75,19 +82,20 @@ export default {
   methods: {
     loadPonds() {
       db.all('SELECT * FROM pond;', (err, rows) => {
-        console.log('loadPonds')
-        console.log(rows);
         this.ponds = rows;
       });
     },
 
     selectPond(pond) {
-      console.log('selectPond: ' + pond.name);
       this.$store.commit('setPond', pond);
     },
 
     deletePond(pond) {
-      console.log('deletePond: ' + pond.name);
+      console.log(pond)
+    },
+
+    isSelected(pond) {
+      return this.$store.getters.hasSelectedPond && this.$store.getters.selectedPond.id === pond.id
     }
   },
 
