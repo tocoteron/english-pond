@@ -16,11 +16,11 @@ db.serialize(() => {
   db.run('DROP TABLE IF EXISTS word_statistics;');
 
   // Create tables
-  db.run('CREATE TABLE IF NOT EXISTS pond (id integer primary key autoincrement, name text);');
-  db.run('CREATE TABLE IF NOT EXISTS text (id integer primary key autoincrement, pond_id integer, original text);');
-  db.run('CREATE TABLE IF NOT EXISTS sentence (id integer primary key autoincrement, pond_id integer, text_id integer, original text, normal text);');
-  db.run('CREATE TABLE IF NOT EXISTS word (id integer primary key autoincrement, pond_id integer, text_id integer, sentence_id integer, original text, normal text);');
-  db.run('CREATE TABLE IF NOT EXISTS word_statistics (pond_id integer, word text, appear_count integer default 0, correct_count integer default 0, incorrect_count integer default 0, PRIMARY KEY(pond_id, word));');
+  db.run('CREATE TABLE IF NOT EXISTS pond (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT);');
+  db.run('CREATE TABLE IF NOT EXISTS text (id INTEGER PRIMARY KEY AUTOINCREMENT, pond_id INTEGER, original TEXT);');
+  db.run('CREATE TABLE IF NOT EXISTS sentence (id INTEGER PRIMARY KEY AUTOINCREMENT, pond_id INTEGER, text_id INTEGER, original TEXT, normal TEXT);');
+  db.run('CREATE TABLE IF NOT EXISTS word (id INTEGER PRIMARY KEY AUTOINCREMENT, pond_id INTEGER, text_id INTEGER, sentence_id INTEGER, original TEXT, normal TEXT);');
+  db.run('CREATE TABLE IF NOT EXISTS word_statistics (pond_id INTEGER, word TEXT, appear_count INTEGER DEFAULT 0, correct_count INTEGER DEFAULT 0, incorrect_count INTEGER DEFAULT 0, PRIMARY KEY(pond_id, word));');
 
   // Create pond
   registerPond('test_pond');
