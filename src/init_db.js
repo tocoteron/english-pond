@@ -13,12 +13,14 @@ db.serialize(() => {
   db.run('DROP TABLE IF EXISTS text;');
   db.run('DROP TABLE IF EXISTS sentence;');
   db.run('DROP TABLE IF EXISTS word;');
+  db.run('DROP TABLE IF EXISTS word_statistics;');
 
   // Create tables
   db.run('CREATE TABLE IF NOT EXISTS pond (id integer primary key autoincrement, name text);');
   db.run('CREATE TABLE IF NOT EXISTS text (id integer primary key autoincrement, pond_id integer, original text);');
   db.run('CREATE TABLE IF NOT EXISTS sentence (id integer primary key autoincrement, pond_id integer, text_id integer, original text, normal text);');
   db.run('CREATE TABLE IF NOT EXISTS word (id integer primary key autoincrement, pond_id integer, text_id integer, sentence_id integer, original text, normal text);');
+  db.run('CREATE TABLE IF NOT EXISTS word_statistics (word text primary key, appear_count integer default 0, correct_count integer default 0, incorrect_count integer default 0);');
 
   // Create pond
   db.run("INSERT INTO pond (name) VALUES ('test_pond');");
