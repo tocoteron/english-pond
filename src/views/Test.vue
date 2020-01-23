@@ -2,8 +2,9 @@
   <div class="test">
     <div v-if="word !== null" class="problem">
       <h1 class="text-center error--text">{{ word.word }}</h1>
-      <v-progress-linear :value="time_percent" class="mb-5"></v-progress-linear>
-      <h3 class="text-center my-5">Appear count: {{ word.appear_count }}, Correct count: {{ word.correct_count }}, Incorrect count: {{ word.incorrect_count }}</h3>
+      <v-progress-linear :value="100 * word.evaluation / word.appear_count" class="mb-5"></v-progress-linear>
+      <h3 class="text-center my-2">Appear count: {{ word.appear_count }}, Correct count: {{ word.correct_count }}, Incorrect count: {{ word.incorrect_count }}</h3>
+      <h3 class="mt-2 mb-4">Evaluation: {{ word.evaluation }}</h3>
       <div class="text-center">
         <v-btn
           outlined
@@ -37,8 +38,6 @@ export default {
 
   data: () => ({
     word: null, 
-    timer: null,
-    time_percent: null,
   }),
 
   methods: {
@@ -50,7 +49,7 @@ export default {
         SELECT *
         FROM word_statistics
         WHERE pond_id = $pond_id
-        ORDER BY appear_count * appear_count * ((incorrect_count + 1) / (incorrect_count + correct_count + 1)) DESC
+        ORDER BY appear_count * ((incorrect_count + 1) / (incorrect_count + correct_count + 1)) DESC
         LIMIT 10
       )
       ORDER BY RANDOM();
@@ -60,27 +59,13 @@ export default {
       },
       (err, row) => {
         if(row !== undefined) {
+          row.evaluation = row.appear_count * ((row.incorrect_count + 1) / (row.incorrect_count + row.correct_count + 1))
           this.word = row;
-
-          this.time_percent = 100;
-
-          let self = this;
-          this.timer = setInterval(() => {
-            if(self.time_percent <= 0) {
-              self.incorrect();
-            } else {
-              self.time_percent--; 
-            }
-          }, 100);
         }
       });
     },
 
     correct() {
-      if(this.timer !== null) {
-        clearInterval(this.timer);
-      }
-
       db.run('UPDATE word_statistics SET correct_count = correct_count + 1 WHERE pond_id = $pond_id AND word = $word;', {
         $pond_id: this.$store.getters.selectedPond.id,
         $word: this.word.word,
@@ -90,10 +75,6 @@ export default {
     },
 
     incorrect() {
-      if(this.timer !== null) {
-        clearInterval(this.timer);
-      }
-
       db.run('UPDATE word_statistics SET incorrect_count = incorrect_count + 1 WHERE pond_id = $pond_id AND word = $word;', {
         $pond_id: this.$store.getters.selectedPond.id,
         $word: this.word.word,
@@ -111,12 +92,6 @@ export default {
       this.loadWord();
     }
   },
-
-  beforeDestroy() {
-    if(this.timer !== null) {
-      clearInterval(this.timer);
-    }
-  }
 }
 </script>
 
