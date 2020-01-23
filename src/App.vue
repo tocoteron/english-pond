@@ -1,41 +1,19 @@
 <template>
   <v-app>
-    <v-btn
-      id="nav-btn"
-      class="d-lg-none"
-      fixed
-      fab
-      dark
-      color="purple darken-4"
-      @click.stop="drawer = !drawer"
-    >
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
-    </v-btn>
-
-    <v-navigation-drawer
+    <v-bottom-navigation
       app
-      v-model="drawer"
+      v-model="bottomNav"
+      color="primary"
     >
-      <v-list
-        dense
-        nav
+      <v-btn
+        v-for="item in items"
+        :key="item.title"
+        :to="item.link"
       >
-        <v-list-item
-          v-for="item in items"
-          :key="item.title"
-          :to="item.link"
-          link
-        >
-          <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
+        <span>{{ item.title }}</span>
+        <v-icon>{{ item.icon }}</v-icon>
+      </v-btn>
+    </v-bottom-navigation>
 
     <!--
     <v-app-bar app>
@@ -77,7 +55,7 @@ export default {
       { title: 'Test', icon: 'mdi-check', link: 'home' },
       { title: 'Statistics', icon: 'mdi-poll', link: 'home' },
     ],
-    drawer: null,
+    bottomNav: 'home',
   }),
 };
 </script>
