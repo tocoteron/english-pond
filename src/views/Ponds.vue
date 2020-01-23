@@ -80,17 +80,18 @@ export default {
         this.ponds = rows;
       });
     },
+
     selectPond(pond) {
       console.log('selectPond: ' + pond.name);
       this.$store.commit('setPond', pond);
     },
+
     deletePond(pond) {
       console.log('deletePond: ' + pond.name);
     }
   },
 
   created() {
-    console.log('ponds created');
     this.loadPonds();
   }
 }
