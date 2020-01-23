@@ -68,9 +68,9 @@ export default {
     if (!this.$store.getters.hasSelectedPond) {
       alert('Any ponds is not selected. Please select a pond.');
       this.$router.push('ponds');
+    } else {
+      this.loadWordStatistics();
     }
-
-    this.loadWordStatistics();
   }
 }
 </script>

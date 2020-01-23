@@ -29,6 +29,7 @@
         v-for="item in items"
         :key="item.title"
         :to="item.link"
+        :value="item.link"
       >
         <span>{{ item.title }}</span>
         <v-icon>{{ item.icon }}</v-icon>
@@ -56,10 +57,10 @@ export default {
     items: [
       { title: 'Ponds', icon: 'mdi-wave', link: 'ponds' },
       { title: 'Register', icon: 'mdi-plus', link: 'register' },
-      { title: 'Test', icon: 'mdi-check', link: 'home' },
+      { title: 'Test', icon: 'mdi-check', link: 'test' },
       { title: 'Statistics', icon: 'mdi-poll', link: 'statistics' },
     ],
-    bottomNav: 'home',
+    bottomNav: 'ponds',
   }),
 };
 </script>
