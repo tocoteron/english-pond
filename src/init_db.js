@@ -16,14 +16,15 @@ db.serialize(() => {
   db.run('DROP TABLE IF EXISTS word_statistics;');
 
   // Create tables
-  db.run('CREATE TABLE IF NOT EXISTS pond (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT);');
+  db.run('CREATE TABLE IF NOT EXISTS pond (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT);');
   db.run('CREATE TABLE IF NOT EXISTS text (id INTEGER PRIMARY KEY AUTOINCREMENT, pond_id INTEGER, original TEXT);');
   db.run('CREATE TABLE IF NOT EXISTS sentence (id INTEGER PRIMARY KEY AUTOINCREMENT, pond_id INTEGER, text_id INTEGER, original TEXT, normal TEXT);');
   db.run('CREATE TABLE IF NOT EXISTS word (id INTEGER PRIMARY KEY AUTOINCREMENT, pond_id INTEGER, text_id INTEGER, sentence_id INTEGER, original TEXT, normal TEXT);');
   db.run('CREATE TABLE IF NOT EXISTS word_statistics (pond_id INTEGER, word TEXT, appear_count INTEGER DEFAULT 0, correct_count INTEGER DEFAULT 0, incorrect_count INTEGER DEFAULT 0, PRIMARY KEY(pond_id, word));');
 
   // Create pond
-  registerPond('test_pond');
+  registerPond('test_pond', 'This is a test pond. There is a sample text data.');
+  registerPond('empty_pond', 'This is a empty pond. There is no data.');
 
   let sampleData = brokenDownText(sampleText);
 
@@ -64,9 +65,10 @@ db.serialize(() => {
 
 //db.close();
 
-function registerPond(name) {
-  db.run("INSERT INTO pond (name) VALUES ($name);", {
+function registerPond(name, description) {
+  db.run("INSERT INTO pond (name, description) VALUES ($name, $description);", {
     $name: name,
+    $description: description,
   });
 }
 

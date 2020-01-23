@@ -1,15 +1,21 @@
 <template>
   <div class="register">
+    <v-row>
+      <v-col>
+        <v-btn
+          outlined
+          color="primary"
+          class="mb-1 float-right"
+        >
+          Register words
+        </v-btn>
+      </v-col>
+    </v-row>
+
     <v-textarea
       v-model="inputText"
       label="Input text"
     ></v-textarea>
-
-    <v-row>
-      <v-col>
-        <v-btn outlined color="primary" class="mb-1 float-right">Register words</v-btn>
-      </v-col>
-    </v-row>
 
     <BreakingDownPanel
       v-for="(sentence, index) in brokenDownText.sentences"

@@ -50,7 +50,7 @@ export default {
 
   data: () => ({
     items: [
-      { title: 'Ponds', icon: 'mdi-wave', link: 'home' },
+      { title: 'Ponds', icon: 'mdi-wave', link: 'ponds' },
       { title: 'Register', icon: 'mdi-plus', link: 'register' },
       { title: 'Test', icon: 'mdi-check', link: 'home' },
       { title: 'Statistics', icon: 'mdi-poll', link: 'home' },
