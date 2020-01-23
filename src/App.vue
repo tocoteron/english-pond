@@ -33,6 +33,10 @@
         <span>{{ item.title }}</span>
         <v-icon>{{ item.icon }}</v-icon>
       </v-btn>
+
+      <h3 v-if="this.$store.getters.hasSelectedPond" id="selected-pond-name">
+        {{ this.$store.getters.selectedPond.name }}
+      </h3>
     </v-bottom-navigation>
 
   </v-app>
@@ -64,5 +68,9 @@ export default {
 #nav-btn {
   bottom: 16px;
   right: 16px;
+}
+
+#selected-pond-name {
+  line-height: 56px;
 }
 </style>

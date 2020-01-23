@@ -37,14 +37,14 @@
             <v-btn
               text
               color="primary"
-              @click="selectPond(pond.id);"
+              @click="selectPond(pond);"
             >
               Select
             </v-btn>
             <v-btn
               text
               color="error"
-              @click="deletePond(pond.id);"
+              @click="deletePond(pond);"
             >
               Delete
             </v-btn>
@@ -80,11 +80,12 @@ export default {
         this.ponds = rows;
       });
     },
-    selectPond(pondId) {
-      console.log('selectPond: ' + pondId);
+    selectPond(pond) {
+      console.log('selectPond: ' + pond.name);
+      this.$store.commit('setPond', pond);
     },
-    deletePond(pondId) {
-      console.log('deletePond: ' + pondId);
+    deletePond(pond) {
+      console.log('deletePond: ' + pond.name);
     }
   },
 
