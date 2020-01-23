@@ -23,8 +23,8 @@ db.serialize(() => {
   db.run('CREATE TABLE IF NOT EXISTS word_statistics (pond_id INTEGER, word TEXT, appear_count INTEGER DEFAULT 0, correct_count INTEGER DEFAULT 0, incorrect_count INTEGER DEFAULT 0, PRIMARY KEY(pond_id, word));');
 
   // Create pond
-  registerPond('test_pond', 'This is a test pond. There is a sample text data.');
   registerPond('empty_pond', 'This is a empty pond. There is no data.');
+  registerPond('test_pond', 'This is a test pond. There is a sample text data.');
 
   let sampleData = brokenDownText(sampleText);
 

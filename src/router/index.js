@@ -29,6 +29,11 @@ const routes = [
     name: 'register',
     component: () => import('../views/Register.vue')
   },
+  {
+    path: '/statistics',
+    name: 'statistics',
+    component: () => import('../views/Statistics.vue')
+  },
 ]
 
 const router = new VueRouter({

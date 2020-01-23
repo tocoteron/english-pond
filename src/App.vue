@@ -57,7 +57,7 @@ export default {
       { title: 'Ponds', icon: 'mdi-wave', link: 'ponds' },
       { title: 'Register', icon: 'mdi-plus', link: 'register' },
       { title: 'Test', icon: 'mdi-check', link: 'home' },
-      { title: 'Statistics', icon: 'mdi-poll', link: 'home' },
+      { title: 'Statistics', icon: 'mdi-poll', link: 'statistics' },
     ],
     bottomNav: 'home',
   }),
