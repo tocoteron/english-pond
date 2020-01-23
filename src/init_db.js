@@ -20,7 +20,7 @@ db.serialize(() => {
   db.run('CREATE TABLE IF NOT EXISTS text (id integer primary key autoincrement, pond_id integer, original text);');
   db.run('CREATE TABLE IF NOT EXISTS sentence (id integer primary key autoincrement, pond_id integer, text_id integer, original text, normal text);');
   db.run('CREATE TABLE IF NOT EXISTS word (id integer primary key autoincrement, pond_id integer, text_id integer, sentence_id integer, original text, normal text);');
-  db.run('CREATE TABLE IF NOT EXISTS word_statistics (word text primary key, appear_count integer default 0, correct_count integer default 0, incorrect_count integer default 0);');
+  db.run('CREATE TABLE IF NOT EXISTS word_statistics (pond_id integer, word text, appear_count integer default 0, correct_count integer default 0, incorrect_count integer default 0, PRIMARY KEY(pond_id, word));');
 
   // Create pond
   db.run("INSERT INTO pond (name) VALUES ('test_pond');");
@@ -51,6 +51,7 @@ db.serialize(() => {
               sentence.words.forEach(word => {
                 console.log('Pond: ' + pondId + ', ' + 'Text: ' + textId + ', Sentence: ' + sentenceId + ', ' + word.normal);
                 registerWord(pondId, textId, sentenceId, word);
+                registerWordStatistics(pondId, word);
               });
             });
           });
@@ -86,6 +87,19 @@ function registerWord(pondId, textId, sentenceId, word) {
     $sentence_id: sentenceId,
     $original: word.original,
     $normal: word.normal,
+  });
+}
+
+function registerWordStatistics(pondId, word) {
+  db.serialize(() => {
+    db.run("INSERT INTO word_statistics (pond_id, word) SELECT $pond_id, $word WHERE NOT EXISTS (SELECT 1 FROM word_statistics WHERE pond_id = $pond_id AND word = $word);", {
+      $pond_id: pondId,
+      $word: word.normal,
+    });
+    db.run("UPDATE word_statistics SET appear_count = appear_count + 1 WHERE pond_id = $pond_id AND word = $word;", {
+      $pond_id: pondId,
+      $word: word.normal,
+    });
   });
 }
 
