@@ -37,6 +37,28 @@
       </v-row>
 
       <v-divider class="my-4" />
+      <h2
+        class="text-center py-2"
+      >
+        Meaning
+        <v-btn
+          outlined
+          color="info"
+          :disabled="showMeaning"
+          @click="showMeaning = !showMeaning"
+        >
+          Show
+        </v-btn>
+      </h2>
+      <v-banner
+        v-show="showMeaning"
+        single-line
+        class="text-center"
+      >
+        {{ this.meaning }}
+      </v-banner>
+
+      <v-divider class="my-4" />
       <h2 class="text-center py-2">Sentences</h2>
 
       <v-list>
@@ -61,11 +83,22 @@
 import sqlite3 from 'sqlite3';
 const db = new sqlite3.Database('./src/pond.db')
 
+import rp from 'request-promise';
+import cheerio from 'cheerio';
+
+const options = {
+  transform: (body) => {
+    return cheerio.load(body);
+  }
+};
+
 export default {
   name: 'test',
 
   data: () => ({
     word: null, 
+    meaning: null,
+    showMeaning: false,
     sentences: [],
   }),
 
@@ -91,9 +124,21 @@ export default {
           row.evaluation = row.appear_count * ((row.incorrect_count + 1) / (row.incorrect_count + row.correct_count + 1))
           this.word = row;
 
-          this.loadSentences()
+          this.loadMeaning();
+          this.loadSentences();
         }
       });
+    },
+
+    loadMeaning() {
+      rp.get('https://ejje.weblio.jp/content/' + this.word.word, options)
+        .then(($) => {
+          return $('td.content-explanation.ej').text();
+        }).then((meaning) => {
+          this.meaning = meaning;
+        }).catch((error) => {
+          console.error('Error: ', error);
+        });
     },
 
     loadSentences() {
@@ -114,6 +159,8 @@ export default {
       });
 
       this.loadWord();
+
+      this.showMeaning = false;
     },
 
     incorrect(deltaCount) {
@@ -124,6 +171,8 @@ export default {
       });
 
       this.loadWord();
+
+      this.showMeaning = false;
     }
   },
 
