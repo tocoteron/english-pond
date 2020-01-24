@@ -26,7 +26,7 @@
 
 <script>
 import sqlite3 from 'sqlite3';
-const db = new sqlite3.Database('./src/pond.db')
+const db = new sqlite3.Database('pond.db')
 
 export default {
   name: 'statistics',

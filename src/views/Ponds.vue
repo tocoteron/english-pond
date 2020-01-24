@@ -47,6 +47,7 @@
             >
               Select
             </v-btn>
+            <!--
             <v-btn
               text
               color="error"
@@ -55,6 +56,7 @@
             >
               Delete
             </v-btn>
+            -->
           </v-card-actions>
         </v-card>
       </v-col>
@@ -64,7 +66,7 @@
 
 <script>
 import sqlite3 from 'sqlite3';
-const db = new sqlite3.Database('./src/pond.db')
+const db = new sqlite3.Database('pond.db')
 
 export default {
   name: "ponds",
@@ -90,9 +92,11 @@ export default {
       this.$store.commit('setPond', pond);
     },
 
+    /*
     deletePond(pond) {
       console.log(pond)
     },
+    */
 
     isSelected(pond) {
       return this.$store.getters.hasSelectedPond && this.$store.getters.selectedPond.id === pond.id

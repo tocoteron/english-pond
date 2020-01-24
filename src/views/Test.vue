@@ -45,7 +45,7 @@
           outlined
           color="info"
           :disabled="showMeaning"
-          @click="showMeaning = !showMeaning"
+          @click="showMeaning = !showMeaning; loadMeaning();"
         >
           Show
         </v-btn>
@@ -81,7 +81,7 @@
 
 <script>
 import sqlite3 from 'sqlite3';
-const db = new sqlite3.Database('./src/pond.db')
+const db = new sqlite3.Database('pond.db')
 
 import rp from 'request-promise';
 import cheerio from 'cheerio';
@@ -124,7 +124,6 @@ export default {
           row.evaluation = row.appear_count * ((row.incorrect_count + 1) / (row.incorrect_count + row.correct_count + 1))
           this.word = row;
 
-          this.loadMeaning();
           this.loadSentences();
         }
       });
@@ -135,10 +134,14 @@ export default {
         .then(($) => {
           return $('td.content-explanation.ej').text();
         }).then((meaning) => {
+          console.log(meaning)
           this.meaning = meaning;
-        }).catch((error) => {
+        });
+        /*
+        .catch((error) => {
           console.error('Error: ', error);
         });
+        */
     },
 
     loadSentences() {
@@ -160,6 +163,7 @@ export default {
 
       this.loadWord();
 
+      this.meaning = null;
       this.showMeaning = false;
     },
 
@@ -172,6 +176,7 @@ export default {
 
       this.loadWord();
 
+      this.meaning = null;
       this.showMeaning = false;
     }
   },
