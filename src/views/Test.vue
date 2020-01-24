@@ -10,16 +10,25 @@
           <div class="text-center">
             <v-btn
               outlined
+              color="primary"
+              elevation="0"
+              class="mr-8"
+              @click="correct(100)"
+            >
+              Perfect
+            </v-btn>
+            <v-btn
+              outlined
               color="success"
               class="mr-2"
-              @click="correct"
+              @click="correct(1)"
             >
               I know.
             </v-btn>
             <v-btn
               outlined
               color="error"
-              @click="incorrect"
+              @click="incorrect(1)"
             >
               I don't know.
             </v-btn>
@@ -69,7 +78,7 @@ export default {
         SELECT *
         FROM word_statistics
         WHERE pond_id = $pond_id
-        ORDER BY appear_count * ((incorrect_count + 1) / (incorrect_count + correct_count + 1)) DESC
+        ORDER BY appear_count * (1.0 * (incorrect_count + 1) / (incorrect_count + correct_count + 1)) DESC
         LIMIT 10
       )
       ORDER BY RANDOM();
@@ -88,20 +97,18 @@ export default {
     },
 
     loadSentences() {
-      console.log(this.$store.getters.selectedPond.id)
-      console.log(this.word)
       db.all('SELECT * FROM word, sentence WHERE word.pond_id = $pond_id AND word.normal = $word AND word.sentence_id = sentence.id GROUP BY sentence.id;', {
         $pond_id: this.$store.getters.selectedPond.id,
         $word: this.word.word,
       },
       (err, rows) => {
-        console.log(rows)
         this.sentences = rows;
       });
     },
 
-    correct() {
-      db.run('UPDATE word_statistics SET correct_count = correct_count + 1 WHERE pond_id = $pond_id AND word = $word;', {
+    correct(deltaCount) {
+      db.run('UPDATE word_statistics SET correct_count = correct_count + $delta_count WHERE pond_id = $pond_id AND word = $word;', {
+        $delta_count: deltaCount,
         $pond_id: this.$store.getters.selectedPond.id,
         $word: this.word.word,
       });
@@ -109,8 +116,9 @@ export default {
       this.loadWord();
     },
 
-    incorrect() {
-      db.run('UPDATE word_statistics SET incorrect_count = incorrect_count + 1 WHERE pond_id = $pond_id AND word = $word;', {
+    incorrect(deltaCount) {
+      db.run('UPDATE word_statistics SET incorrect_count = incorrect_count + $delta_count WHERE pond_id = $pond_id AND word = $word;', {
+        $delta_count: deltaCount,
         $pond_id: this.$store.getters.selectedPond.id,
         $word: this.word.word,
       });

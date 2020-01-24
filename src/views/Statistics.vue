@@ -51,6 +51,10 @@ export default {
         text: 'Incorrect count',
         value: 'incorrect_count',
       },
+      {
+        text: 'Evaluation value',
+        value: 'evaluation'
+      }
     ],
   }),
 
@@ -60,6 +64,9 @@ export default {
         $pond_id: this.$store.getters.selectedPond.id,
       }, (err, rows) => {
         this.word_statistics = rows;
+        this.word_statistics.forEach(word => {
+          word.evaluation = word.appear_count * ((word.incorrect_count + 1) / (word.incorrect_count + word.correct_count + 1))
+        })
       });
     }
   },
