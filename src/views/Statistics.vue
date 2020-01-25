@@ -13,14 +13,28 @@
       </v-col>
     </v-row>
 
-    <v-data-table
-      :headers="headers"
-      :items="word_statistics"
-      :items-per-page="10"
-      sort-by="appear_count"
-      :sort-desc="true"
-      class="elevation-1"
-    ></v-data-table>
+    <v-card>
+      <v-card-title>
+        Word statistics
+        <v-spacer></v-spacer>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
+      </v-card-title>
+      <v-data-table
+        :headers="headers"
+        :items="word_statistics"
+        :items-per-page="10"
+        sort-by="appear_count"
+        :sort-desc="true"
+        :search="search"
+        class="elevation-1"
+      ></v-data-table>
+    </v-card>
   </div>
 </template>
 
@@ -33,6 +47,7 @@ export default {
 
   data: () => ({
     word_statistics: [],
+    search: '',
     headers: [
       {
         text: 'Word',
