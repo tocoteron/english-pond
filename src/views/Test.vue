@@ -134,7 +134,6 @@ export default {
         .then(($) => {
           return $('td.content-explanation.ej').text();
         }).then((meaning) => {
-          console.log(meaning)
           this.meaning = meaning;
         });
         /*
