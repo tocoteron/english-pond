@@ -2,21 +2,23 @@
   <div class="register">
     <v-row>
       <v-col>
-        <v-btn
-          outlined
-          color="primary"
-          class="mb-1 float-right"
-          @click="registerWords"
-        >
-          Register words
-        </v-btn>
+        <v-form>
+          <v-textarea
+            v-model="inputText"
+            label="Input text"
+          ></v-textarea>
+
+          <v-btn
+            outlined
+            color="primary"
+            class="mb-1 float-right"
+            @click="registerWords"
+          >
+            Register words
+          </v-btn>
+        </v-form>
       </v-col>
     </v-row>
-
-    <v-textarea
-      v-model="inputText"
-      label="Input text"
-    ></v-textarea>
 
     <BreakingDownPanel
       v-for="(sentence, index) in brokenDownText.sentences"
@@ -132,11 +134,11 @@ export default {
         db.run("INSERT INTO text (pond_id, original) VALUES ($pond_id, $original);", {
           $pond_id: pondId,
           $original: text,
-        }, (res) => {
-          if(res === null) {
-            resolve()
+        }, (err) => {
+          if(err) {
+            reject(err)
           }
-          reject()
+          resolve()
         })
       })
     },
@@ -148,11 +150,11 @@ export default {
           $text_id: textId,
           $original: sentence.original,
           $normal: sentence.normal,
-        }, (res) => {
-          if(res === null) {
-            resolve()
+        }, (err) => {
+          if(err) {
+            reject(err)
           }
-          reject()
+          resolve()
         });
       })
     },
