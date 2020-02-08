@@ -79,54 +79,82 @@ export default {
   },
 
   methods: {
-    registerWords() {
+    async registerWords() {
       let pondId = this.$store.getters.selectedPond.id;
       let targetData = this.brokenDownText;
 
       // Text registration
-      db.serialize(() => {
-        this.registerText(pondId, targetData.original);
+      await this.registerText(pondId, targetData.original);
 
-        // Get last registered text id
-        db.get('SELECT id FROM text WHERE rowid = last_insert_rowid();', (err, row) => {
-          let textId = row.id;
+      // Get last registered text id
+      const textId = await this.getLastInsertedTextId();
 
-          // Sentences registration
-          targetData.sentences.forEach(sentence => {
-            db.serialize(() => {
-              this.registerSentence(pondId, textId, sentence);
+      // Sentences registration
+      targetData.sentences.forEach(async sentence => {
+        await this.registerSentence(pondId, textId, sentence);
 
-              db.get('SELECT id FROM sentence WHERE rowid = last_insert_rowid();', (err, row) => {
-                let sentenceId = row.id;
+        const sentenceId = await this.getLastInsertedSentenceId();
 
-                // Words registration
-                sentence.words.forEach(word => {
-                  this.registerWord(pondId, textId, sentenceId, word);
-                  this.registerWordStatistics(pondId, word);
-                });
-              });
-            });
-          });
+        // Words registration
+        sentence.words.forEach(word => {
+          this.registerWord(pondId, textId, sentenceId, word);
+          this.registerWordStatistics(pondId, word);
         });
       });
 
       this.inputText = '';
     },
 
+    getLastInsertedTextId() {
+      return new Promise((resolve, reject) => {
+        db.get('SELECT id FROM text WHERE rowid = last_insert_rowid();', (err, row) => {
+          if(err) {
+            reject(err)
+          }
+          resolve(row.id)
+        })
+      })
+    },
+
+    getLastInsertedSentenceId() {
+      return new Promise((resolve, reject) => {
+        db.get('SELECT id FROM sentence WHERE rowid = last_insert_rowid();', (err, row) => {
+          if(err) {
+            reject(err)
+          }
+          resolve(row.id)
+        })
+      })
+    },
+
     registerText(pondId, text) {
-      db.run("INSERT INTO text (pond_id, original) VALUES ($pond_id, $original);", {
-        $pond_id: pondId,
-        $original: text,
-      });
+      return new Promise((resolve, reject) => {
+        db.run("INSERT INTO text (pond_id, original) VALUES ($pond_id, $original);", {
+          $pond_id: pondId,
+          $original: text,
+        }, (res) => {
+          if(res === null) {
+            resolve()
+          }
+          reject()
+        })
+      })
     },
 
     registerSentence(pondId, textId, sentence) {
-      db.run("INSERT INTO sentence (pond_id, text_id, original, normal) VALUES ($pond_id, $text_id, $original, $normal);", {
-        $pond_id: pondId,
-        $text_id: textId,
-        $original: sentence.original,
-        $normal: sentence.normal,
-      });
+      return new Promise((resolve, reject) => {
+        db.run("INSERT INTO sentence (pond_id, text_id, original, normal) VALUES ($pond_id, $text_id, $original, $normal);", {
+          $pond_id: pondId,
+          $text_id: textId,
+          $original: sentence.original,
+          $normal: sentence.normal,
+        }, (res) => {
+          if(res === null) {
+            resolve()
+          }
+          reject()
+        });
+      })
     },
 
     registerWord(pondId, textId, sentenceId, word) {
