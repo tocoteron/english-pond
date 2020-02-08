@@ -73,7 +73,6 @@
       </v-list>
     </div>
     <div v-else>
-      <h1>None word.</h1>
     </div>
 
   </div>
