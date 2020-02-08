@@ -32,7 +32,6 @@
         sort-by="appear_count"
         :sort-desc="true"
         :search="search"
-        class="elevation-1"
       ></v-data-table>
     </v-card>
   </div>

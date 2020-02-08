@@ -65,7 +65,7 @@
         <template v-for="(sentence, index) in sentences">
           <v-list-item :key="sentence.normal">
             <v-list-item-content>
-              <v-list-item-subtitle>{{ sentence.original }}</v-list-item-subtitle>
+              {{ sentence.original }}
             </v-list-item-content>
           </v-list-item>
           <v-divider :key="index" />
