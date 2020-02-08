@@ -63,6 +63,10 @@ export default {
 </script>
 
 <style scoped>
+.v-application {
+  font-family: 'M PLUS 1p', sans-serif !important;
+}
+
 #nav-btn {
   bottom: 16px;
   right: 16px;

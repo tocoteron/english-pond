@@ -76,10 +76,10 @@
         >
           <v-list-item three-line>
             <v-list-item-content>
-              <v-list-item-title v-if="isSelected(pond)" class="headline mb-1 white--text">
+              <v-list-item-title v-if="isSelected(pond)" class="mb-1 white--text font-weight-medium">
                 {{ pond.name }} (Selected)
               </v-list-item-title>
-              <v-list-item-title v-else class="headline mb-1">
+              <v-list-item-title v-else class="mb-1 font-weight-medium">
                 {{ pond.name }}
               </v-list-item-title>
 
