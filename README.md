@@ -23,6 +23,8 @@ A word that is high appearance frequency and incorrect answer rate is evaluated 
 
 You can take the test that sets problems of only word that the evaluation is high.
 
+SlideShare(Detail): [https://www.slideshare.net/TenTokoro/english-pond-225838132](https://www.slideshare.net/TenTokoro/english-pond-225838132)
+
 ## Requirement
 - Node.js / npm
 
